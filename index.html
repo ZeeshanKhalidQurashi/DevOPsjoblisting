@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DevOps Remote Jobs</title>
+</head>
+<body>
+  <h1>DevOps Remote Jobs</h1>
+  <ul id="tweet-list"></ul>
+
+  <script>
+    fetch('tweets.json')
+      .then(response => response.json())
+      .then(data => {
+        const tweetList = document.getElementById('tweet-list');
+        data.forEach(tweet => {
+          const listItem = document.createElement('li');
+          listItem.textContent = `${tweet.created_at}: ${tweet.text} (by @${tweet.user})`;
+          tweetList.appendChild(listItem);
+        });
+      });
+  </script>
+</body>
+</html>
