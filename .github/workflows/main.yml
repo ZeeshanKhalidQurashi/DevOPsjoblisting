@@ -3,9 +3,7 @@ name: Fetch DevOps Remote Jobs
 on:
   schedule:
     - cron: '0 * * * *'  # Run every hour
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -27,13 +25,15 @@ jobs:
 
       - name: Run script to fetch tweets
         run: python fetch_tweets.py
+        env:
+          SOCIAL_SEARCHER_API_KEY: ${{ secrets.SOCIAL_SEARCHER_API_KEY }}
 
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add tweets.json
-          git commit -m "Update tweets"
+          git add tweets.json api_response.json
+          git commit -m "Update tweets and save API response for debugging"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
